@@ -12,6 +12,7 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+
     "commands": [
       {
         "command": "pixie.surpriseColor",
@@ -24,8 +25,117 @@
       {
         "command": "pixie.removeColor",
         "title": "Pixie: Remove color from Workbench"
+      },
+
+   
+      {
+        "command": "pixie.todoListForWorkspace",
+        "title": "Pixie: Get Todos in Workspace", 
+        "icon": {
+          "light": "media/light/open.svg",
+          "dark": "media/dark/open.svg"
+        }
+      },
+      {
+        "command": "pixie.todoListForFolder",
+        "title": "Pixie: Get Todos in this Folder"
+      },
+      {
+        "command": "pixie.todoListForFile",
+        "title": "Pixie: Get Todos in this File"
+      },
+      {
+        "command": "pixie.refreshTodoList",
+        "title": "Pixie: Refresh pixie List",
+        "icon": {
+          "light": "media/light/refresh.svg",
+          "dark": "media/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "pixie.openTodoItem",
+        "title": "Pixie: Open pixie Item in Editor"
+      }
+    ],
+  
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "TodoPanel",
+          "title": "TODO",
+          "icon": "media/dep.svg"          
+        }
+      ]
+    },
+
+    "views": {   
+      "TodoPanel": [
+        {
+          "id": "TodoList",
+          "name": "<<PLACE HOLDER>>",
+          "icon": "media/dep.svg"
+        }
+      ]
+    },
+
+    "menus": {
+
+      "commandPalette": [
+        {
+          "command": "pixie.todoListForFolder",
+          "when": "false"
+        },
+        {
+          "command": "pixie.todoListForFile",
+          "when": "false"
+        },
+        {
+          "command": "pixie.openTodoItem",
+          "when": "false"
+        }
+      ],
+
+      "explorer/context": [
+        {
+          "command": "pixie.todoListForFolder",
+          "when": "explorerResourceIsFolder",
+          "group": "4_search@11"
+        },
+        {
+          "command": "pixie.todoListForFile",
+          "when": "!explorerResourceIsFolder",
+          "group": "4_search@11"
+        }
+      ],
+
+      "view/title": [
+        {
+          "command": "pixie.refreshTodoList",
+          "when": "view == TodoList",
+          "group": "navigation"
+        },
+        {
+          "command": "pixie.todoListForWorkspace",
+          "when": "view == TodoList && pixie.todoListForWorkspaceContext == false",
+          "group": "navigation"
+        }
+      ],
+    
+      "editor/context": [
+        {
+          "command": "pixie.todoListForFile",
+          "group": "navigation@11"
+        }
+      ]
+    },
+
+    "viewsWelcome": [
+      {
+        "view": "TodoList",
+        "contents": "Congrats!! You have no todos in this Workspace, folder, or file.\nIf nothing  open: Open Workspace or right click on folder/file and click open Todos.\n [Open Workspace](command:vscode.openFolder)"
       }
     ]
+
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -18,6 +18,7 @@ export class TodoDataProvider implements vscode.TreeDataProvider<TodoDataItem> {
     constructor(
         private readonly config: string[],
         private readonly folder?: string,
+        private readonly file?: string
     ){}
 
     // events section
@@ -42,19 +43,32 @@ export class TodoDataProvider implements vscode.TreeDataProvider<TodoDataItem> {
         } 
         else {
 
-            if(this.folder)
+            if(this.file)
             {
-                return Promise.resolve(
-                    new WorkSpaceDataItem("doesnt matter", this.folder, this.config, this.refresh).getchildren()
-                );
+                const getDataItemFromDocument = async (pathFile: string) => {
+                    const ans: Line[] = [];
+                    const file = fs.readFileSync(pathFile, 'utf-8');
+                    const document = file.split('\n').map((i) => i.trim());
+                    const pattern = /(\/\/|\#|\/\*\*)\s*(TODO)/ig;
+                    for (let i = 0; i < document.length; i++) {
+                        if (pattern.exec(document[i])) {
+                            ans.push({str: document[i], no: i+1});
+                        }
+                    }
+                    return new FileDataItem(pathFile.slice(pathFile.lastIndexOf("\\")+1), pathFile, vscode.Uri.file(pathFile), ans).getchildren();
+                };
+                return getDataItemFromDocument(this.file);
+            }
+            else if(this.folder)
+            {    
+                return [new FolderDataItem((this.folder) ? this.folder.slice(this.folder.lastIndexOf("\\")+1) : "", this.folder, this.config, this.refresh) ];
             }
             else
             {
                 if(vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0)
                 {
-                    return Promise.resolve(
-                        vscode.workspace.workspaceFolders.map((folder) => new WorkSpaceDataItem(folder.name, folder.uri.fsPath, this.config,  this.refresh))
-                    );
+                    return vscode.workspace.workspaceFolders.map((folder) => new FolderDataItem(folder.name, folder.uri.fsPath, this.config,  this.refresh));
+                    
                 }
                 else{
                     vscode.window.showInformationMessage('No workspace');
@@ -86,8 +100,8 @@ class TodoDataItem extends vscode.TreeItem {
             this.command = {
             arguments:[this.resourceUri, parseInt(this.description.slice(3))-1],
             title: 'Open File',
-            command: 'todo.open', 
-            tooltip: 'Open',
+            command: 'pixie.openTodoItem', 
+            tooltip: 'Open File',
             };
         }
     }
@@ -117,7 +131,7 @@ class FileDataItem extends TodoDataItem {
 
 
 // try async
-class WorkSpaceDataItem extends TodoDataItem {
+class FolderDataItem extends TodoDataItem {
     private readonly result: FileDataItem[] = [];
     private readonly config: string[];
     private readonly base: number;
@@ -204,7 +218,7 @@ class WorkSpaceDataItem extends TodoDataItem {
 
 
 // old sync way
-// class WorkSpaceDataItem extends TodoDataItem {
+// class FolderDataItem extends TodoDataItem {
 //     private readonly result: FileDataItem[] = [];
 //     private readonly config: string[];
 //     private readonly base: number;
