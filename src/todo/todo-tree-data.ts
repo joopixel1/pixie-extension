@@ -30,7 +30,7 @@ export class TodoDataProvider implements vscode.TreeDataProvider<TodoDataItem> {
   
 
 
-  //functions section
+    //functions section
     public getTreeItem(element: TodoDataItem): vscode.TreeItem {
         return element;
     }

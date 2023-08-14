@@ -2,6 +2,11 @@
 import * as vscode from 'vscode';
 import * as Color from 'color';
 
+/**
+ * Returns a color object with different properties of the workbench in vscode to set
+ * @param colorString string | undefined represents a string of a color in hex format starting in #, eg #ffffff
+ * @returns 
+ */
 export function colorObject(colorString: string | undefined): object | undefined {
    
     if(colorString === undefined) {return undefined;}

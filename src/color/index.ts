@@ -3,6 +3,11 @@ import * as Color from 'color';
 import { colorObject } from './color-object';
 
 
+/**
+ * registers extension pixie.color,
+ * which gives u capability to input a color to color ur workbench
+ * @returns vscode.Disposable
+ */
 export function color(): vscode.Disposable {
     return vscode.commands.registerCommand('pixie.color', () => {
         const config = vscode.workspace.getConfiguration('workbench');
@@ -33,6 +38,11 @@ export function color(): vscode.Disposable {
 }
 
 
+/**
+ * registers extension pixie.surpriseColor,
+ * Surprises u with a color to color ur workbench
+ * @returns vscode.Disposable
+ */
 export function surpriseColor(): vscode.Disposable {
     return vscode.commands.registerCommand('pixie.surpriseColor', () => {
         const config = vscode.workspace.getConfiguration('workbench');
@@ -53,6 +63,11 @@ export function surpriseColor(): vscode.Disposable {
 }
 
 
+/**
+ * registers extension pixie.remoceColor,
+ * removes colors added to workbench by this extension
+ * @returns vscode.Disposable
+ */
 export function removeColors(): vscode.Disposable {
     return vscode.commands.registerCommand('pixie.removeColor', () => {
         const config = vscode.workspace.getConfiguration('workbench');
