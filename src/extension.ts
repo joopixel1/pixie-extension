@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as color_extension from './color/index';
 import * as todo_extension from './todo/index';
+import * as polacode_extension from './polacode/index';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -27,8 +28,13 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(todo_extension.refreshTodoTree());
 	context.subscriptions.push(todo_extension.openTodoItem());
 
-	
 
+	// activate commands for polacode extension
+	context.subscriptions.push(polacode_extension.polacodeSerializer(context));
+	context.subscriptions.push(polacode_extension.activatePolacode(context));
+	context.subscriptions.push(polacode_extension.openPolacodeFromSelection(context));
+
+	
 }
 
 // This method is called when your extension is deactivated

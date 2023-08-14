@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onWebviewPanel:polacode"
+  ],
   "main": "./out/extension.js",
   "contributes": {
 
@@ -55,6 +57,15 @@
       {
         "command": "pixie.openTodoItem",
         "title": "Pixie: Open pixie Item in Editor"
+      },
+
+      {
+        "command": "pixie.activatePolacode",
+        "title": "Pixie: Polacode 📸"
+      },
+      {
+        "command": "pixie.openPolacodeFromSelection",
+        "title": "Pixie: Polacode 📸"
       }
     ],
   
@@ -92,6 +103,10 @@
         {
           "command": "pixie.openTodoItem",
           "when": "false"
+        },
+        {
+          "command": "pixie.openPolacodeFromSelection",
+          "when": "false"
         }
       ],
 
@@ -125,6 +140,11 @@
         {
           "command": "pixie.todoListForFile",
           "group": "navigation@11"
+        },
+        {
+          "command": "pixie.openPolacodeFromSelection",
+          "when": "editorHasSelection",
+          "group": "9_cutcopypaste@11"
         }
       ]
     },

@@ -1,10 +1,15 @@
 import * as vscode from 'vscode';
 import { TodoDataProvider, Obj, } from './todo-tree-data';
 
-
+// I could prob do this whole file as a class to similar to polacode, but too lazy
 let dataProvider: undefined | TodoDataProvider = undefined;
 
 
+/**
+ * creates a view with id IodoList,
+ * which gets all the todos in ur workspace
+ * @returns vscode.Disposable
+ */
 export function createTodoTree(): vscode.Disposable {
     const config = Object.keys({ ...vscode.workspace.getConfiguration('search').get<Obj>('exclude'), ...vscode.workspace.getConfiguration('files').get<Obj>('exclude') });
     const view = vscode.window.createTreeView("TodoList", {treeDataProvider: new TodoDataProvider(config)});
@@ -14,6 +19,11 @@ export function createTodoTree(): vscode.Disposable {
 }
 
 
+/**
+ * registers a command pixie.todoListForWorkspace,
+ * which creates a view with id TodoList, that gets all the todos in ur workspace
+ * @returns vscode.Disposable
+ */
 export function createTodoTreeForWorkspace(): vscode.Disposable[] {
     const diposables = [];
     diposables.push(vscode.commands.registerCommand("pixie.todoListForWorkspace", () => createTodoTree()));
@@ -21,6 +31,11 @@ export function createTodoTreeForWorkspace(): vscode.Disposable[] {
 }
 
 
+/**
+ * registers a command pixie.todoListForFolder,
+ * which creates a view with id TodoList, that gets all the todos in ur given folder
+ * @returns vscode.Disposable
+ */
 export function createTodoTreeForFolder(): vscode.Disposable[] {
     const diposables = [];
     diposables.push(vscode.commands.registerCommand('pixie.todoListForFolder', (uri: vscode.Uri) => { 
@@ -36,6 +51,11 @@ export function createTodoTreeForFolder(): vscode.Disposable[] {
 }
 
 
+/**
+ * registers a command pixie.todoListForFile,
+ * which creates a view with id TodoList, that gets all the todos in ur given file
+ * @returns vscode.Disposable
+ */
 export function createTodoTreeForFile(): vscode.Disposable[] {
     const diposables = [];
     diposables.push(vscode.commands.registerCommand('pixie.todoListForFile', (uri: vscode.Uri) => { 
@@ -50,12 +70,21 @@ export function createTodoTreeForFile(): vscode.Disposable[] {
 }
 
 
-
+/**
+ * registers a command pixie.refreshTodoList,
+ * which refreshes the todoList and rechecks again for todos in workspace
+ * @returns vscode.Disposable
+ */
 export function refreshTodoTree(): vscode.Disposable {
     return vscode.commands.registerCommand('pixie.refreshTodoList', () => dataProvider?.refresh());
 }
 
 
+/**
+ * registers a command pixie.openTodoItem,
+ * which opens the file repped by a Todoitems found in TodoListView
+ * @returns vscode.Disposable
+ */
 export function openTodoItem(): vscode.Disposable {
     return vscode.commands.registerCommand('pixie.openTodoItem', (uri: vscode.Uri, line: number, length) => { 
         vscode.workspace.openTextDocument(uri).then((doc) => {
