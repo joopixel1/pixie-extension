@@ -1,17 +1,26 @@
 {
   "name": "pixie-extension",
-  "displayName": "pixie-extension",
+  "displayName": "Pixie",
   "description": "Different tools to improve ur coding experience in vscode",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.81.0"
   },
+  "keywords": [
+    "polacode",
+    "color workbench",
+    "todo panel"
+  ],
   "categories": [
     "Other"
   ],
   "activationEvents": [
     "onWebviewPanel:polacode"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joopixel1/pixie-extension"
+  },
   "main": "./out/extension.js",
   "contributes": {
 
